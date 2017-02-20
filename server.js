@@ -18,8 +18,18 @@ ee.on('login', function(socket) {
 ee.on('message', function(socket, client) {
   socket.on('data', function(data) {
     const command = data.toString().split(' ').shift().trim();
-    console.log('command:', command);
-    console.log('client:', client);
+    const msg = data.toString().split(' ').slice(1).join(' ');
+
+    if(command.includes('@all')) {
+      ee.emit(command, client, msg);
+      return;
+    }
+  });
+});
+
+ee.on('@all', function(client, message) {
+  chatGroup.forEach(ele => {
+    ele.socket.write(`${client.nickname} ${message}`);
   });
 });
 
