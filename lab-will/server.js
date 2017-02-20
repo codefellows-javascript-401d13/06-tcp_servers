@@ -15,8 +15,8 @@ server.on('connection', function(socket) {
   var client = new Client(socket);
 
   socket.on('data', function(data) {
-    const command = data.toString();
-    console.log(command);
+    const command = data.toString().split(' '.shift().trim());
+    console.log('command:', command);
   });
 });
 
