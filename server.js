@@ -15,7 +15,7 @@ ee.on('login', function(socket) {
   ee.emit('message', socket, client);
 });
 
-ee.on('message', function(socket, client) {
+ee.on('message', function(socket, client) {//client = msg sender obj
   socket.on('data', function(data) {
     const command = data.toString().split(' ').shift().trim();
     const userTarget = data.toString().split(' ').slice(1).shift().trim();
@@ -27,18 +27,18 @@ ee.on('message', function(socket, client) {
       return;
     }
 
-    if(command.includes('@nickname')) {
-      //create event and emitter for changing nickname
-      return;
-    }
-
     if(command.includes('@dm')) {
-      //create event and emitter for messaging just one user
+      ee.emit(command, userTarget, client, directMsg);
       return;
     }
 
     if(command.includes('@not')) {
-      //create event and emitter for messaging all but a specific user
+      ee.emit(command, userTarget, client, directMsg);
+      return;
+    }
+
+    if(command.includes('@nickname')) {
+      //create event and emitter for changing nickname
       return;
     }
 
@@ -52,11 +52,26 @@ ee.on('@all', function(client, message) {
   });
 });
 
+ee.on('@dm', function(targetUser, client, msg) {
+  chatGroup.forEach(ele => {
+    if (ele.nickname === targetUser || ele.id === targetUser) {
+      targetUser.socket.write(`${client.nickname} ${msg}`);
+    }
+  });
+});
+
+ee.on('@not', function(targetUser, client, msg) {
+  chatGroup.forEach(ele => {
+    if (ele.nickname != targetUser && ele.id != targetUser) {
+      targetUser.socket.write(`${client.nickname} ${msg}`);
+    }
+  });
+});
 
 ee.on('default', function(client, message) {
   console.log('client:', client);
   console.log('message', message);
-  client.socket.write(`${message} not sent. No command given.\n`);
+  client.socket.write(`${message} not sent. Incorrect or no command given.\n`);
 });
 
 server.on('connection', function(socket) {
