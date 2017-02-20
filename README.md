@@ -36,3 +36,5 @@
 * `@dm` should allow a user to send a message directly to another user by nick name or by their guest id _(unique client id)_
 * when a user sends a message, their nickname should be printed
   * **i.e.** `cfcrew: sup chatterz`
+
+-------------------------------------------------------------------------------
