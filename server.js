@@ -12,8 +12,16 @@ const chatGroup = [];
 ee.on('login', function(socket) {
   const client = new Client(socket);
   chatGroup.push(client);
+  ee.emit('message', socket, client);
 });
 
+ee.on('message', function(socket, client) {
+  socket.on('data', function(data) {
+    const command = data.toString().split(' ').shift().trim();
+    console.log('command:', command);
+    console.log('client:', client);
+  });
+});
 
 server.on('connection', function(socket) {
   ee.emit('login', socket);
