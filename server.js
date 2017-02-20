@@ -38,7 +38,7 @@ ee.on('message', function(socket, client) {//client = msg sender obj
     }
 
     if(command.includes('@nickname')) {
-      //create event and emitter for changing nickname
+      ee.emit(command, client, msg);
       return;
     }
 
@@ -66,6 +66,11 @@ ee.on('@not', function(targetUser, client, msg) {
       targetUser.socket.write(`${client.nickname} ${msg}`);
     }
   });
+});
+
+ee.on('@nickname', function(client, message) {
+  //change users nickname
+  //find correct instance in array and update nickname property
 });
 
 ee.on('default', function(client, message) {
