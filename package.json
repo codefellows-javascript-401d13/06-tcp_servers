@@ -1,0 +1,23 @@
+{
+  "name": "06-tcp_servers",
+  "version": "1.0.0",
+  "description": "![cf](https://i.imgur.com/7v5ASc8.png) Lab 06: TCP Chat Server\r ======",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GLSea1979/06-tcp_servers.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GLSea1979/06-tcp_servers/issues"
+  },
+  "homepage": "https://github.com/GLSea1979/06-tcp_servers#readme",
+  "dependencies": {
+    "node-uuid": "^1.4.7"
+  }
+}
