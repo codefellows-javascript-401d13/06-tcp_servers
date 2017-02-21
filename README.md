@@ -25,8 +25,7 @@ TCP Chat Server requires [Node.js](https://nodejs.org/) v4+ to run.
 Install the dependencies and devDependencies and start the server.
 
 ```sh
-$ npm i -d
-$ node app
+$ node Install
 $ npm init -y
 $ npm i -S uuid
 ```
