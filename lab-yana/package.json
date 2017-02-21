@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "node": "0.0.0",
     "node-uuid": "^1.4.7",
     "uuid": "^3.0.1"
   },

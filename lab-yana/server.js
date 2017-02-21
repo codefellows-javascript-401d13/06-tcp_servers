@@ -35,7 +35,6 @@ ee.on('@dm', function(client, string) {
 
 ee.on('@quit', function(client, string) {
   client.socket.destroy();
-  ee.emit('@all', client, 'has left the chat');
 });
 
 ee.on('@nickname', function(client, string) {
@@ -51,6 +50,7 @@ ee.on('@nickname', function(client, string) {
     }
   });
   if (!inArray) client.nickname = tempNickname;
+  client.socket.write(`${tempNickname} is your new nickname.`);
 });
 
 ee.on('@users', function (client, string) {
@@ -71,7 +71,7 @@ function parseInput(data, client) {
 }
 
 function greeting(client) {
-  client.socket.write('Wecome to chat!\n You can use the following commands: \n @all <message> to send a message to everyone \n @dm <username> to send a message to a single person\n @nickname to change your nickname\n @users to list the nicknames of users currently in chat\n');
+  client.socket.write('Wecome to chat!\n You can use the following commands: \n @all <message> to send a message to everyone \n @dm <username> to send a message to a single person\n @nickname to change your nickname\n @users to list the nicknames of users currently in chat\n @quit to exit the chat\n');
 }
 
 server.on('connection', function(socket) {
@@ -80,10 +80,10 @@ server.on('connection', function(socket) {
   greeting(client);
   socket.on('close', function() {
     pool.forEach(c => {
-      if (c.socket.destroyed === true) {
-        let index = pool.indexOf(client);
-        console.log(`client ${pool[index].id} disconnected`);
-      }
+      let index = pool.indexOf(client);
+      console.log(`client ${pool[index].id} disconnected`);
+      ee.emit('@all', client, 'has left the chat');
+      pool.slice(index, 1);
     });
   });
   socket.on('data', function(data) {
