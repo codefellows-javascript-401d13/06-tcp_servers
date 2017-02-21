@@ -9,13 +9,13 @@ const ee = new EE();
 
 const pool = [];
 
-
-
 ee.on('@dm', function(client, string) {
   let nickname = string.split(' ').shift().trim();
   let message = string.split(' ').slice(1).join(' ').trim();
 
   pool.forEach( c => {
+
+
     if (c.nickname === nickname) {
       c.socket.write(`${client.nickname}: ${message}`);
     }
@@ -23,11 +23,10 @@ ee.on('@dm', function(client, string) {
 });
 
 ee.on('@all', function(client, string) {
-  pool.forEach(c => {
+  pool.forEach( c => {
       c.socket.write(`${client.nickname}:` + string);
   });
 });
-
 
 ee.on('default', function(client, string) {
   client.socket.write('not a command\n');
@@ -40,10 +39,14 @@ server.on('connection', function(socket) {
 
   socket.on('data', function(data) {
     const command = data.toString().split(' ').shift().trim();
-    const message = data.toString().split(' ');
 
+    // console.log(check);
+    // console.log(command);
+    // const message = data.toString().split(' ');
+    // console.log(message);
     if (command.startsWith('@')) {
       ee.emit(command, client, data.toString().split().slice(1).join(' '));
+      // console.log('inside the if @ check');
       return;
     }
 
