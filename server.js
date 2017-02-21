@@ -15,10 +15,21 @@ ee.on('login', function(socket) {
   const client = new Client(socket);
   chatGroup.push(client);
   ee.emit('message', socket, client);
+  socket.on('close', function(socket) {
+    ee.emit('logout', socket, client);
+  });
 });
 
-ee.on('logout', function(socket) {
-  console.log(socket);
+ee.on('logout', function(socket, client) {
+  if(!socket) {
+    chatGroup.forEach(ele => {
+      if (ele.id === client.id) {
+        let removeUser = chatGroup.indexOf(client);
+        chatGroup.splice(removeUser, 1);
+      }
+    });
+  }
+  console.log(chatGroup);
 });
 
 ee.on('message', function(socket, client) {//client = msg sender obj
@@ -75,7 +86,7 @@ ee.on('@dm', function(targetUser, client, msg) {
 ee.on('@not', function(targetUser, client, msg) {
   chatGroup.forEach(ele => {
     if (ele.nickname != targetUser && ele.id != targetUser) {
-      targetUser.socket.write(`${client.nickname} ${msg}`);
+      ele.socket.write(`${client.nickname} ${msg}`);
     }
   });
 });
