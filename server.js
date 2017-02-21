@@ -46,16 +46,21 @@ server.on('connection', function(socket) {
 
     if(command.startsWith('*')) {
       ee.emit('*', client, data);
+      return;
     }
     if(command.startsWith('-help')) {
       ee.emit('-help', client, data);
+      return;
     }
     if(command.startsWith('@all')) {
       ee.emit('@all', client, data);
+      return;
     }
     if(command.startsWith('@dm')) {
       ee.emit('@dm', client, data);
+      return;
     }
+    ee.emit('default', client, data);
   });
 });
 
@@ -66,11 +71,11 @@ ee.on('*', function(client, data) {
 });
 
 ee.on('@dm', function(client, data) {
-  let recipient = data.toString().split(' ').slice(1, 2).join(' ');
+  let recipient = data.toString().split(' ').slice(1, 2).join(' ').trim();
   let message = data.toString().split(' ').slice(1).join(' ').trim();
   pool.forEach(function(c) {
     if (recipient === c.nickName) {
-      //couldn't get through the if block for some reason
+      console.log('got through!')
       c.socket.write(client.nickName + message);
     }
   });
@@ -88,5 +93,9 @@ ee.on('-help', function() {
   '*[yourName] <--- use as such to change your Public displying name ||',
   '@dm [user] <--- use as such to message one user directly ||',
   '@all <--- Will write a message to all users'
-);
+  );
+});
+
+ee.on('default', function(client) {
+  client.socket.write('not a command\n');
 });
