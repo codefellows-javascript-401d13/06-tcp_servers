@@ -69,9 +69,8 @@ ee.on('@dm', function(client, data) {
   let recipient = data.toString().split(' ').slice(1, 2).join(' ');
   let message = data.toString().split(' ').slice(1).join(' ').trim();
   pool.forEach(function(c) {
-    console.log('nickname', c.nickName);
-    console.log('recipient', recipient);
     if (recipient === c.nickName) {
+      //got through the conditional
       c.socket.write(client.nickName + message);
     }
   });
