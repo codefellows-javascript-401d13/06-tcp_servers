@@ -9,18 +9,28 @@ const ee = new EE();
 
 const chatGroup = [];
 
+///+++++ socket events ++++++\\\
+
 ee.on('login', function(socket) {
   const client = new Client(socket);
   chatGroup.push(client);
   ee.emit('message', socket, client);
 });
 
+ee.on('logout', function(socket) {
+  console.log(socket);
+});
+
 ee.on('message', function(socket, client) {//client = msg sender obj
   socket.on('data', function(data) {
+    let userTarget;
+    let directMsg;
+    if (data.toString().split(' ').length > 2) {
+      userTarget = data.toString().split(' ').slice(1).shift().trim();
+      directMsg = data.toString().split(' ').slice(2).join(' ');
+    }
     const command = data.toString().split(' ').shift().trim();
-    const userTarget = data.toString().split(' ').slice(1).shift().trim();
     const msg = data.toString().split(' ').slice(1).join(' ');
-    const directMsg = data.toString().split(' ').slice(2).join(' ').trim();
 
     if(command.includes('@all')) {
       ee.emit(command, client, msg);
@@ -46,6 +56,8 @@ ee.on('message', function(socket, client) {//client = msg sender obj
   });
 });
 
+///+++++  custom command helpers +++++ \\\
+
 ee.on('@all', function(client, message) {
   chatGroup.forEach(ele => {
     ele.socket.write(`${client.nickname} ${message}`);
@@ -55,7 +67,7 @@ ee.on('@all', function(client, message) {
 ee.on('@dm', function(targetUser, client, msg) {
   chatGroup.forEach(ele => {
     if (ele.nickname === targetUser || ele.id === targetUser) {
-      targetUser.socket.write(`${client.nickname} ${msg}`);
+      ele.socket.write(`${client.nickname} ${msg}`);
     }
   });
 });
@@ -78,13 +90,17 @@ ee.on('@nickname', function(client, newName) {
 });
 
 ee.on('default', function(client, message) {
-  console.log('client:', client);
-  console.log('message', message);
   client.socket.write(`${message} not sent. Incorrect or no command given.\n`);
 });
 
+///+++++  server events +++++\\\
+
 server.on('connection', function(socket) {
   ee.emit('login', socket);
+});
+
+server.on('close', function(socket) {
+  ee.emit('logout', socket);
 });
 
 server.listen(PORT, function() {
