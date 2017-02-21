@@ -9,6 +9,8 @@ const Client = require('./model/client.js');
 const command = require('./lib/command-helper.js');
 
 let pool = [];
+let commands = ['@all', '@dm', '@nickname', '#help'];
+
 ee.on('@all', command.msgAll);
 ee.on('@dm', command.msgDirect);
 ee.on('@nickname', command.changeNickname);
@@ -23,19 +25,19 @@ function onConnection(socket){
   clientConnect(client);
   socket.on('data', handleClientData);
   socket.on('close', removeClient);
-  // socket.on('error', );
+  socket.on('error', err => console.log(err));
 
   function handleClientData(data) {
-    console.log();
     let entry = data.toString().trim();
     console.log(`${client.nickname}: ${entry}`);
 
     if (entry.startsWith('@') || entry.startsWith('#')) {
-      let command = data.toString().split(' ').shift().trim();
+      let userCommand = data.toString().split(' ').shift().trim();
+      if (!commands.includes(userCommand)) return command.badCommand(client, userCommand);
       let string = data.toString().split(' ').slice(1).join(' ');
-      return ee.emit(command, client, string, pool);
+      return ee.emit(userCommand, client, string, pool);
     }
-    ee.emit('default',client);
+    ee.emit('default', client);
   }
 
   function removeClient() {

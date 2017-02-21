@@ -37,3 +37,7 @@ exports.changeNickname = function(client, string, pool) {
   let message = `${client.lastNickname} has changed to ${client.nickname}\n`;
   exports.msgAll(client, message, pool);
 };
+
+exports.badCommand = function(client, command) {
+  client.socket.write(`Sorry, ${command} is not a valid command\n`);
+};
