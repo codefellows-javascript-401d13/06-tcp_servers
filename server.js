@@ -16,7 +16,7 @@ ee.on('login', function(socket) {
   chatGroup.push(client);
   ee.emit('message', socket, client);
   socket.on('error', function(error) {
-    ee.emit('socketError', error, client);
+    ee.emit('socketError', error);
   });
   socket.on('close', function(socket) {
     ee.emit('logout', socket, client);
@@ -34,8 +34,9 @@ ee.on('logout', function(socket, client) {
       chatGroup.splice(removeUser, 1);
     }
   });
-  console.log(chatGroup);
 });
+
+///+++++ Message from client pool sockets handling +++++\\\
 
 ee.on('message', function(socket, client) {//client = msg sender obj
   socket.on('data', function(data) {
