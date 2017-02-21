@@ -9,8 +9,6 @@ const server = net.createServer();
 
 const pool = [];
 
-//::::: EVENTS :::::/
-
 ee.on('@dm', function(client, string) {
   let nickname = string.split(' ').shift().trim();
   let message = string.split(' ').slice(1).join(' ').trim();
@@ -20,15 +18,13 @@ ee.on('@dm', function(client, string) {
     console.log('nickname:', nickname);
 
     if(c.nickname === nickname) {
-      //trouleshoot
       c.socket.write(`${client.nickname}: ${message}`);
     }
   });
 });
 
 ee.on('@nickname', function(client, string) {
-  let nickname = string;
-  client.nickname = nickname;
+  client.nickname = string;
 });
 
 
@@ -39,24 +35,13 @@ ee.on('@all', function(client, string) {
 });
 
 ee.on('default', function(client, string) {
-  //if char is a space diff err message
   client.socket.write(' is not a valid command\n\r');
-  //may not need \r
 });
-//:::::       ::::://
 
 server.on('connection', function(socket) {
-  // where is socket getting filled with?
-  // where is something being passed into
-  // watch vid where this is writen
   var client = new Client(socket);
   pool.push(client);
-  console.log(client.nickname);
-  console.log(client.id);
-
   socket.on('data', function(data) {
-    // on data?
-    // socket docs?
     const command = data.toString().split(' ').shift().trim();
     console.log('command:', command);
     if (command.startsWith('@')) {
@@ -76,7 +61,6 @@ server.on('connection', function(socket) {
       pool.splice(person, 1);
     }
   });
-
 });
 
 server.listen(PORT, function() {
