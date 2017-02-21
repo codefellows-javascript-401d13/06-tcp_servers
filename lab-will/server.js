@@ -6,17 +6,68 @@ const Client = require('./model/client.js');
 // const PORT = process.env.PORT || 3000;
 
 // Random Port;
-const PORT = Math.floor(Math.random() * 9999-1000);
+const PORT = Math.floor(Math.random() * ((9999-1000) + 1) + 1000);
 
 const server = net.createServer();
 const ee = new EE();
 
+const pool = [];
+
+ee.on('@all', function(client, string) {
+  pool.forEach(c => {
+    c.socket.write(`${client.nickname}:` + string)
+  });
+});
+
+ee.on('@dm', function(client, string) {
+  let nickname = string.split(' ').shift().trim();
+  let message = string.split(' ').slice(1).join(' ').trim();
+
+  pool.forEach(c => {
+    console.log('client:', c.nickname);
+    console.log('nickname:', nickname);
+
+    if (c.nickname === nickname) {
+      c.socket.write(`${client.nickname}: ${message}`);
+    }
+  });
+});
+
+ee.on('@newname', function(client, string) {
+  let newName = string.split(' ').shift().trim();
+  client.nickname = newName;
+});
+
+ee.on('@close', function(client) {
+  pool.forEach(c => {
+    if (client.nickname === c.nickname) {
+      pool.pop(client);
+    }
+    if (pool.length === 0) {
+      ee.emit('close')
+    }
+  })
+});
+
+ee.on('default', function(client, string) {
+  client.socket.write('not a command \n');
+});
+
 server.on('connection', function(socket) {
   var client = new Client(socket);
-
+  pool.push(client);
+  // console.log(client);
   socket.on('data', function(data) {
-    const command = data.toString().split(' '.shift().trim());
+    const command = data.toString().split(' ').shift().trim(' ');
     console.log('command:', command);
+
+    if (command.startsWith('@')) {
+        ee.emit(command, client, data.toString().split(' ').slice(1).join(' '));
+        return;
+    }
+
+    ee.emit('default', client, data.toString());
+
   });
 });
 
