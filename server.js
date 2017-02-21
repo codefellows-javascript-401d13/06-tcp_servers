@@ -24,14 +24,14 @@ ee.on('login', function(socket) {
 });
 
 ee.on('socketError', (error) => {
-  if (error) console.log(error);
+  if (error) console.error(error);
 });
 
 ee.on('logout', (socket, client) => {
-  chatGroup.forEach(ele => {
+  chatGroup.forEach((ele, index) => {
     if (ele.id === client.id) {
-      let removeUser = chatGroup.indexOf(client);
-      chatGroup.splice(removeUser, 1);
+      // let removeUser = chatGroup.indexOf(client);
+      chatGroup.splice(index, 1);
     }
   });
 });
