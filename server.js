@@ -15,20 +15,25 @@ ee.on('login', function(socket) {
   const client = new Client(socket);
   chatGroup.push(client);
   ee.emit('message', socket, client);
+  socket.on('error', function(error) {
+    ee.emit('socketError', error, client);
+  });
   socket.on('close', function(socket) {
     ee.emit('logout', socket, client);
   });
 });
 
+ee.on('socketError', function(error) {
+  if (error) console.log(error);
+});
+
 ee.on('logout', function(socket, client) {
-  if(!socket) {
-    chatGroup.forEach(ele => {
-      if (ele.id === client.id) {
-        let removeUser = chatGroup.indexOf(client);
-        chatGroup.splice(removeUser, 1);
-      }
-    });
-  }
+  chatGroup.forEach(ele => {
+    if (ele.id === client.id) {
+      let removeUser = chatGroup.indexOf(client);
+      chatGroup.splice(removeUser, 1);
+    }
+  });
   console.log(chatGroup);
 });
 
@@ -60,6 +65,11 @@ ee.on('message', function(socket, client) {//client = msg sender obj
 
     if(command.includes('@nickname')) {
       ee.emit(command, client, msg);
+      return;
+    }
+
+    if(command.includes('destroy')) {
+      socket[command]('Something went horribly wrong');
       return;
     }
 
