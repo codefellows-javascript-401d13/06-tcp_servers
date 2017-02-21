@@ -20,7 +20,7 @@ ee.on('message', function(socket, client) {//client = msg sender obj
     const command = data.toString().split(' ').shift().trim();
     const userTarget = data.toString().split(' ').slice(1).shift().trim();
     const msg = data.toString().split(' ').slice(1).join(' ');
-    const directMsg = data.toString().split(' ').slice(2).join(' ');
+    const directMsg = data.toString().split(' ').slice(2).join(' ').trim();
 
     if(command.includes('@all')) {
       ee.emit(command, client, msg);
@@ -68,9 +68,13 @@ ee.on('@not', function(targetUser, client, msg) {
   });
 });
 
-ee.on('@nickname', function(client, message) {
-  //change users nickname
-  //find correct instance in array and update nickname property
+ee.on('@nickname', function(client, newName) {
+  let message = newName.split(' ').shift().trim();
+  chatGroup.forEach(ele => {
+    if (ele.id === client.id) {
+      ele.nickname = message;
+    }
+  });
 });
 
 ee.on('default', function(client, message) {
