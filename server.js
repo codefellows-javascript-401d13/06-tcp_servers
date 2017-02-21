@@ -70,7 +70,7 @@ ee.on('@dm', function(client, data) {
   let message = data.toString().split(' ').slice(1).join(' ').trim();
   pool.forEach(function(c) {
     if (recipient === c.nickName) {
-      //got through the conditional
+      //couldn't get through the if block for some reason
       c.socket.write(client.nickName + message);
     }
   });
