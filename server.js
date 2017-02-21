@@ -59,7 +59,7 @@ server.on('connection', function(socket) {
     let person = pool.indexOf(client.uuidv4);
     if (pool > -1) {
       pool.splice(person, 1);
-    console.log(`${client.nickname} has left the server`);
+      console.log(`${client.nickname} has left the server`);
     }
   });
 });
