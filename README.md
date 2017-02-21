@@ -1,9 +1,9 @@
-![cf](https://i.imgur.com/7v5ASc8.png) Lab 06: TCP Chat Server
+TCP Chat Server
 ======
 
 This is a basic TCP chat server built with Node.js. All logic is built into the main file while user data is abstracted into a separate model. It relies on node's native uuid module to create user ids as well as node's native net module to create and run the server.
 
-To get it started:
+## To get it started:
   Clone the repo and import Node's uuid module by using ```npm i node-uuid```
   Then open the application using 'node server'
   Anyone wishing to communicate with others using this app should first identify their IP address and then, in a separate command line window from the server, input 'telnet 000.000.0.0 3000'
