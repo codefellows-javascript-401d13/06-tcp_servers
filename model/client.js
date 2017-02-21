@@ -7,3 +7,5 @@ const Client = module.exports = function(socket) {
   this.nickname = `user_${Math.ceil(Math.random()*10000)}`;
   this.id = uuid.v4();
 };
+
+console.log(Client);

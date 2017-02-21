@@ -36,7 +36,7 @@ Install the dependencies and start the server.
 ```sh
 $ cd lab-dana
 $ npm i
-$ node server.js
+$ node server
 ```
 
 To test the capabilities of chatsburgh for yourself, split your terminal window horizontally and then two or three times vertically:

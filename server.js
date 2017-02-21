@@ -15,19 +15,19 @@ ee.on('login', function(socket) {
   const client = new Client(socket);
   chatGroup.push(client);
   ee.emit('message', socket, client);
-  socket.on('error', function(error) {
+  socket.on('error', (error) => {
     ee.emit('socketError', error);
   });
-  socket.on('close', function(socket) {
+  socket.on('close', (socket) => {
     ee.emit('logout', socket, client);
   });
 });
 
-ee.on('socketError', function(error) {
+ee.on('socketError', (error) => {
   if (error) console.log(error);
 });
 
-ee.on('logout', function(socket, client) {
+ee.on('logout', (socket, client) => {
   chatGroup.forEach(ele => {
     if (ele.id === client.id) {
       let removeUser = chatGroup.indexOf(client);
@@ -38,7 +38,7 @@ ee.on('logout', function(socket, client) {
 
 ///+++++ Message from client pool sockets handling +++++\\\
 
-ee.on('message', function(socket, client) {//client = msg sender obj
+ee.on('message', (socket, client) => {
   socket.on('data', function(data) {
     let userTarget;
     let directMsg;
@@ -80,13 +80,13 @@ ee.on('message', function(socket, client) {//client = msg sender obj
 
 ///+++++  custom command helpers +++++ \\\
 
-ee.on('@all', function(client, message) {
+ee.on('@all', (client, message) => {
   chatGroup.forEach(ele => {
     ele.socket.write(`${client.nickname} ${message}`);
   });
 });
 
-ee.on('@dm', function(targetUser, client, msg) {
+ee.on('@dm', (targetUser, client, msg) => {
   chatGroup.forEach(ele => {
     if (ele.nickname === targetUser || ele.id === targetUser) {
       ele.socket.write(`${client.nickname} ${msg}`);
@@ -94,7 +94,7 @@ ee.on('@dm', function(targetUser, client, msg) {
   });
 });
 
-ee.on('@not', function(targetUser, client, msg) {
+ee.on('@not', (targetUser, client, msg) => {
   chatGroup.forEach(ele => {
     if (ele.nickname != targetUser && ele.id != targetUser) {
       ele.socket.write(`${client.nickname} ${msg}`);
@@ -102,7 +102,7 @@ ee.on('@not', function(targetUser, client, msg) {
   });
 });
 
-ee.on('@nickname', function(client, newName) {
+ee.on('@nickname', (client, newName) => {
   let message = newName.split(' ').shift().trim();
   chatGroup.forEach(ele => {
     if (ele.id === client.id) {
@@ -111,20 +111,20 @@ ee.on('@nickname', function(client, newName) {
   });
 });
 
-ee.on('default', function(client, message) {
+ee.on('default', (client, message) => {
   client.socket.write(`${message} not sent. Incorrect or no command given.\n`);
 });
 
 ///+++++  server events +++++\\\
 
-server.on('connection', function(socket) {
+server.on('connection', (socket) => {
   ee.emit('login', socket);
 });
 
-server.on('close', function(socket) {
+server.on('close', (socket) => {
   ee.emit('logout', socket);
 });
 
-server.listen(PORT, function() {
+server.listen(PORT, () => {
   console.log(`Server started on port: ${PORT}`);
 });
