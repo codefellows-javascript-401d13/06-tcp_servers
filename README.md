@@ -1,38 +1,18 @@
 ![cf](https://i.imgur.com/7v5ASc8.png) Lab 06: TCP Chat Server
 ======
 
-## To Submit this Assignment
-  * Fork this repository
-  * Write all of your code in a directory named `lab-` + `<your name>` **e.g.** `lab-brian`
-  * Push to your repository
-  * Submit a pull request to this repository
-  * Submit a link to your PR in canvas
-  * Write a question and observation on canvas
+### About the chat server:
 
-## Include
-* `.gitignore`
-* `.eslint`
-* `package.json`
-* `gulpfile.js`
-* `README.md`
- * write a paragraph about your project
- * write documentation on how to get the project running
- * write documentation on how to connect to the server
+  - This interactive chat server uses TCP sockets which allows multiple users to interact in a simple terminal window. The client should be able to connect to the server through telnet with their IP address that is being served on the local port.
 
-## Description
+### How to run the application:
+- User must have a terminal program to run commands
+- User must have npm installed for node uuid as well as node.js
 
-* Create a TCP Server using the NodeJS native `net` module
-* Create a Client Constructor
-* When sockets connect to the server, a new `Client` instance should be made
-* All clients should have a unique `id` property - this should come from the use of `node-uuid`
-* When sockets are connected with the client pool they should be given event listeners for `data`, `error`, and `close` events
- * When a socket emits the `close` event, the socket should be removed from the client pool
- * When a socket emits the `error` event, the error should be logged on the server
- * When a socket emits the `data` event, the data should be logged on the server and the commands below should be implemented
+        Go to the root directory and type: node server.js(serving on PORT 3000)
 
-## Custom commands
-* `@all` should trigger a broadcast event
-* `@nickname` should allow a user change their nickname
-* `@dm` should allow a user to send a message directly to another user by nick name or by their guest id _(unique client id)_
-* when a user sends a message, their nickname should be printed
-  * **i.e.** `cfcrew: sup chatterz`
+
+### How to connect to the server:
+        Open another terminal window and type telnet and your 'IP address 3000'
+        This connects your server to the IP address allowing communication between
+        sockets
