@@ -13,7 +13,7 @@ exports.help = function(client) {
 };
 
 exports.default = function(client) {
-  client.socket.write('Sorry yo, that\'s not a command, enter #help for all the valid commands\n');
+  client.socket.write('Sorry yo, please start with a command, enter #help for all the valid commands\n');
 };
 
 exports.msgAll = function(client, string, pool) {
@@ -26,8 +26,9 @@ exports.msgDirect = function(client, string, pool) {
   let poolNicknames = pool.map(c => c.nickname);
 
   if (poolNicknames.includes(userDirect)) {
-    pool[poolNicknames.indexOf(userDirect)].socket.write(`${client.nickname}: ${message}`);
+    return pool[poolNicknames.indexOf(userDirect)].socket.write(`${client.nickname}: ${message}`);
   }
+  client.socket.write(`Sorry yo, ${userDirect} is not in the chatroom right now`);
 };
 
 exports.changeNickname = function(client, string, pool) {
@@ -39,5 +40,5 @@ exports.changeNickname = function(client, string, pool) {
 };
 
 exports.badCommand = function(client, command) {
-  client.socket.write(`Sorry, ${command} is not a valid command\n`);
+  client.socket.write(`Sorry yo, ${command} is not a valid command\n`);
 };
