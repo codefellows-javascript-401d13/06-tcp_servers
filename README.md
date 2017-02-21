@@ -48,8 +48,9 @@ for ex. "telnet 10.0.0.178 3000" and you will see "Escape character is '^]'." an
  * When a socket emits the `data` event, the data will be logged on the server and the commands below will be implemented
 
 ### Chat Features
-@all triggers a broadcast event
-@nickname allows a user change their nickname
-@dm allows a user to send a message directly to another user by nick name or by their guest id (unique client id)
-when a user sends a message, their nickname will be printed
-i.e. cupid: sup lover
+
+* @all triggers a broadcast event
+* @nickname allows a user change their nickname
+* @dm allows a user to send a message directly to another user by nick name or by their guest id (unique client id)
+  when a user sends a message, their nickname will be printed
+  i.e. cupid: sup lover
