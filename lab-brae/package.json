@@ -19,6 +19,6 @@
   },
   "homepage": "https://github.com/0blu3/06-tcp_servers#readme",
   "dependencies": {
-    "node-uuid": "^1.4.7",
+    "node-uuid": "^1.4.7"
   }
 }

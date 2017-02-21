@@ -14,12 +14,18 @@ ee.on('@dm', function(client, string) {
   let message = string.split(' ').slice(1).join(' ').trim();
 
   pool.forEach(c => {
-    // console.log('client:', c.nickname);
-    // console.log('nickname:', nickname);
+    console.log('client:', c.nickname);
+    console.log('nickname:', nickname);
+
     if (c.nickname === nickname) {
       c.socket.write(`${client.nickname}: ${message}`);
     }
   });
+});
+
+ee.on('@nickname', function(client, string) {
+  let nickname = string.trim();
+  client.socket.write(`Your name is: ${string}`);
 });
 
 ee.on('@all', function(client, string) {
@@ -38,20 +44,24 @@ server.on('connection', function(socket) {
 
   socket.on('data', function(data) {
     const command = data.toString().split(' ').shift().trim();
-    // remove carriage return - returns the cursor to the beginning of the same line
-    // remove new line character - puts you on a new line
-    // shift() returns the firs titem of an array and returns that
-    // trim() removes whitespace from left and right side
     console.log('command:', command);
 
     if (command.startsWith('@')) {
-      // split the command string, remove the command with a prepended "\\"
-      // put the command back together to display to the user
       ee.emit(command, client, data.toString().split(' ').slice(1).join(' '));
       return;
     }
 
     ee.emit('default', client, data.toString());
+  });
+});
+
+server.on('close', function() {
+  pool.forEach( client => {
+    if (client.id === client.id){
+      let index = pool.indexOf(client);
+      pool.splice(index, index + 1);
+    }
+    client.socket.write(`${client.nickname} has left the room.`);
   });
 });
 
