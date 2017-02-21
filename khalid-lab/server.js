@@ -20,7 +20,7 @@ server.on('connection', function(socket){
   // });
   socket.on('data', function(data){
     const command = data.toString().split(' ').shift().trim();
-    console.log('command: ', command);
+    // console.log('command: ', command);
     if(command.startsWith('@')){
       ee.emit(command, client, data.toString().split(' ').slice(1).join(' '));
       return;
@@ -42,13 +42,13 @@ ee.on('@all', function(client, string){
 ee.on('@dm', function(client, string){
   let username = string.split(' ').shift().trim();
   let message = string.split(' ').slice(1).join(' ').trim();
-  console.log('INSIDE DM');
-  console.log('username :',username+'00');
-  console.log('message :', message);
+  // console.log('INSIDE DM');
+  // console.log('username :',username+'00');
+  // console.log('message :', message);
   clientsArray.forEach( c => {
-    console.log('Users: ', client.username+ '00');
+    // console.log('Users: ', client.username+ '00');
     if (c.username === username){
-      console.log('WE MADE IT!!!');
+      // console.log('WE MADE IT!!!');
       c.socket.write(`${client.username}: ${message}\n`);
       return;
     }
