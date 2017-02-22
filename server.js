@@ -71,14 +71,12 @@ server.on('connection', function(socket) {
     //have customer user based event initiate
       return; 
     }
-    
-    socket.destroy(error);
 
     ee.emit('default', client, data.toString());
   });    
 });
 
 server.listen(PORT, function() {
-  console.log('server is up cuh:', PORT);
+  console.log('server is up:', PORT);
 });
 
