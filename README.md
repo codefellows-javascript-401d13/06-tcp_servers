@@ -50,7 +50,7 @@ for ex. "telnet 10.0.0.178 3000" and you will see "Escape character is '^]'." an
 ### Chat Features
 
 * @all triggers a broadcast event
-* @nickname allows a user change their nickname
+* @newname allows a user change their nickname
 * @dm allows a user to send a message directly to another user by nick name or by their guest id (unique client id)
   when a user sends a message, their nickname will be printed
   i.e. cupid: sup lover
