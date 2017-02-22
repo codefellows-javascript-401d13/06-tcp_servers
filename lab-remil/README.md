@@ -24,3 +24,5 @@ telnet <IP address> <PORT>
 @dm <user> <message>    #sends direct message to user
 @nickname <name>        #change user nickname
 ```
+
+test for git auth
