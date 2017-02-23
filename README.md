@@ -1,38 +1,40 @@
-![cf](https://i.imgur.com/7v5ASc8.png) Lab 06: TCP Chat Server
-======
+# TCP Chat_Server
 
-## To Submit this Assignment
-  * Fork this repository
-  * Write all of your code in a directory named `lab-` + `<your name>` **e.g.** `lab-brian`
-  * Push to your repository
-  * Submit a pull request to this repository
-  * Submit a link to your PR in canvas
-  * Write a question and observation on canvas
+This app was built to host a small "chat room" using "TelNet." The host will first need to initialize the server. Upon doing so, the host may share their IP address to any users wishing to join the room.
 
-## Include
-* `.gitignore`
-* `.eslint`
-* `package.json`
-* `gulpfile.js`
-* `README.md`
- * write a paragraph about your project
- * write documentation on how to get the project running
- * write documentation on how to connect to the server
+#### Getting Started:
+In order to begin using the app, navigate to the app's main directory in your terminal. Then run the following command:
+```
+node server.js
+```
+This will initiate the server for the chat room.
 
-## Description
+Then you must share your current IP address (found in your network settings) with any users wishing to join the chat server. Any user may join by typing this command into their terminal:
 
-* Create a TCP Server using the NodeJS native `net` module
-* Create a Client Constructor
-* When sockets connect to the server, a new `Client` instance should be made
-* All clients should have a unique `id` property - this should come from the use of `node-uuid`
-* When sockets are connected with the client pool they should be given event listeners for `data`, `error`, and `close` events
- * When a socket emits the `close` event, the socket should be removed from the client pool
- * When a socket emits the `error` event, the error should be logged on the server
- * When a socket emits the `data` event, the data should be logged on the server and the commands below should be implemented
+```
+telnet [Host IP] 3000
+```
+In the case that the host has a specified PORT, let the command '3000' above be changed to the host's specified PORT number. [Host IP] is the IP address found in host's network settings.
 
-## Custom commands
-* `@all` should trigger a broadcast event
-* `@nickname` should allow a user change their nickname
-* `@dm` should allow a user to send a message directly to another user by nick name or by their guest id _(unique client id)_
-* when a user sends a message, their nickname should be printed
-  * **i.e.** `cfcrew: sup chatterz`
+#### Commands:
+A user is able to make the following commands:
+- '@all' (will message every user currently in the room).
+- '@dm' [username] (will directly message a user where [username] is someone currently in the chat room.
+- '*[nickname]' (will allow any user to change their publicly displaying nick name.
+- '-help' (will print out all available commands).
+
+**Note that when using @dm there is a space between [username] and the command. whereas with *[username]
+
+#### Features:
+-'help' command to print a list of viable commands to the user.
+-The ability for each user to change their publicly displaying nickname.
+-A dynamically updating 'pool' of users, which also displays the current amount.
+
+#### Built Using:
+-"Net" (node module)
+-"Events" (node module)
+-"Node-UUID" (npm)
+
+#### Possible Future Features:
+-A command to display every user currently in the pool (in order to message them directly).
+-Have funny emotes print to the screen, i.e. shorthand commands.
