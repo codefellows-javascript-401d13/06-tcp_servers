@@ -76,7 +76,7 @@ ee.on('@dm', function(client, data) {
   let message = data.toString().split(' ').slice(1).join(' ').trim();
   pool.forEach(function(c) {
     if (recipient === c.nickName) {
-      c.socket.write(client.nickName + message);
+      c.socket.write(client.nickName + message + '\n');
     }
   });
 });
@@ -84,7 +84,7 @@ ee.on('@dm', function(client, data) {
 ee.on('@all', function(client, data) {
   let message = data.toString().split(' ').slice(1).join(' ').trim();
   pool.forEach(function(c) {
-    c.socket.write(client.nickName + message);
+    c.socket.write(client.nickName + message + '\n');
   });
 });
 
