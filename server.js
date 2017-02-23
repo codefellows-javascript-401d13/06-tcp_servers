@@ -65,17 +65,17 @@ server.on('connection', function(socket) {
 });
 
 ee.on('*', function(client, data) {
-  let nickname = data.toString().split('').slice(1).join('');
+  let nickname = data.toString().split('').slice(1).join('').trim();
+  console.log(nickname);
   client.nickName = nickname;
-  console.log('nickname changed to: ', nickname);
 });
 
 ee.on('@dm', function(client, data) {
   let recipient = data.toString().split(' ').slice(1, 2).join(' ').trim();
+  console.log('intended recipient:', recipient);
   let message = data.toString().split(' ').slice(1).join(' ').trim();
   pool.forEach(function(c) {
     if (recipient === c.nickName) {
-      console.log('got through!')
       c.socket.write(client.nickName + message);
     }
   });
