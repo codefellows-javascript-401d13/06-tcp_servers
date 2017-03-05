@@ -6,7 +6,7 @@ const Client = require('./model/client.js');
 // const PORT = process.env.PORT || 3000;
 
 // Random Port;
-const PORT = Math.floor(Math.random() * ((9999-1000) + 1) + 1000);
+const PORT = process.env.PORT || 8000;
 
 const server = net.createServer();
 const ee = new EE();
@@ -15,7 +15,7 @@ const pool = [];
 
 ee.on('@all', function(client, string) {
   pool.forEach(c => {
-    c.socket.write(`${client.nickname}:` + string)
+    c.socket.write(`${client.nickname}: ` + string)
   });
 });
 
@@ -39,14 +39,7 @@ ee.on('@newname', function(client, string) {
 });
 
 ee.on('@close', function(client) {
-  pool.forEach(c => {
-    if (client.nickname === c.nickname) {
-      pool.pop(client);
-    }
-    if (pool.length === 0) {
-      ee.emit('close')
-    }
-  })
+  client.socket.destroy();
 });
 
 ee.on('default', function(client, string) {
